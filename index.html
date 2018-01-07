@@ -12,7 +12,7 @@
     var updateStart = function() {
         var temp = [], rand;
         while(temp.length < 6) {
-            rand = Math.floor(products.length * Math.random());
+            rand = parseInt(products.length * Math.random());
             if(temp.indexOf(rand) === -1) temp.push(rand);
         }
         
