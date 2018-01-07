@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet" href="../semantic/semantic.min.css" />
+<link rel="stylesheet" href="../styles/admin.css" />
+<script src="../scripts/jquery-3.2.1.min.js"></script>
+<script src="../semantic/semantic.min.js"></script>
+<script src="../scripts/global.js"></script>
+<script src="../scripts/admin.js"></script>
+<title>Administration - TechStore</title>
+<script>
+    var showEmails = function() {
+        for(var value of customers) {
+            if(value.newsletter) $('.products').prepend('<div class="column ptb5">'+value.email+'</div>');
+        }
+    };
+</script>
+</head>
+<body class="pushable">
+    <!-- Left Sidebar -->
+    <div class="ui inverted left vertical sidebar menu">
+        <div class="mdiv"></div><ul class="ul">
+            <li><a class="ulink" href="orders.html"><i class="home icon"></i><span>Hem</span></a></li>
+            <li><a class="ulink" href="customers.html"><i class="user icon"></i><span>Kundlistan</span></a></a></li>
+            <li><a class="ulink" href="emails.html"><i class="mail icon"></i><span>Epostlistan</span></a></a></li>
+            <li><a class="ulink" href="contacts.html"><i class="comments icon"></i><span>Meddelanden</span></a></a></li>
+            <li><a class="ulink" href="orders.html"><i class="shop icon"></i><span>Orderlistan</span></a></a></li>
+        </ul>
+    </div>
+
+    <!-- Top Fixed Menu  menu-trigger-->
+    <div class="ui top fixed menu">
+        <div class="ui container">
+            <a class="item meny"><i class="sidebar icon"></i><span>Meny</span></a>
+            <a class="item logo" href="orders.html">TechStore</a>
+            <div class="menu right">
+                <a id="customers" class="ui item" href="customers.html"><i class="user icon"></i><span>Kundlistan</span></a>
+                <a id="emails" class="ui item" href="emails.html"><i class="mail icon"></i><span>Epostlistan</span></a>
+                <a id="contacts" class="ui item" href="contacts.html"><i class="comments icon"></i><span>Meddelanden</span></a>
+                <a id="orders" class="ui item" href="orders.html"><i class="shop icon"></i><span>Orderlistan</span></a>
+                <a id="signout" class="ui item"><i class="sign out icon"></i><span>Logga ut</span></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="pusher">
+        <!-- Page Content Here-->
+        <div class="mdiv"></div>
+        <div class="ui container">
+            <div class="one wide row">
+                <h2 class="center">Epostlistan</h2>
+                <div class="ui stackable three column grid products bordertop"></div> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>

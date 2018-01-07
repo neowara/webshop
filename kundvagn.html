@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet" href="semantic/semantic.min.css" />
+<link rel="stylesheet" href="styles/main.css" />
+<script src="scripts/jquery-3.2.1.min.js"></script>
+<script src="semantic/semantic.min.js"></script>
+<script src="scripts/main.js"></script>
+<title>Kundvagn - TechStore</title>
+<script>
+    var cart = {}; const frakt = 55;
+    if(localStorage.cart) cart = JSON.parse(localStorage.cart);
+    if($.isEmptyObject(cart)) window.location = 'index.html';
+    
+    var initKonto = function() {
+        if(curUID) {
+            var customer = {};
+            $('.loggain').parent().remove();
+            for(var value of customers) {
+                if(value.email == curUID) {
+                    customer = value;
+                    break;
+                }
+            }
+            if($.isEmptyObject(customer)) return;
+            
+            $('#kontoForm input[name=name]').val(customer.name);
+            $('#kontoForm input[name=phone]').val(customer.phone);
+            $('#kontoForm input[name=email]').val(customer.email).prop('disabled', true);
+            $('#kontoForm input[name=password]').val(customer.password);
+            $('#kontoForm input[name=repass]').val(customer.password);
+            $('#kontoForm input[name=newsletter]').prop('checked', customer.newsletter);
+            
+            customer = customer.address.split(', ');
+            $('#kontoForm input[name=gatuadress]').val(customer[0]);
+            if(customer[1]) {
+                customer = customer[1].split(' ');
+                $('#kontoForm input[name=zipcode]').val(customer[0]);
+                if(customer[1]) $('#kontoForm input[name=city]').val(customer[1]);
+            }
+        }
+    };
+    
+    var showCart = function() {
+        if($.isEmptyObject(cart)) {
+            $('#kcart').html('<h3 class="center red">Kundvagnen är tom</h3>');
+            return $('#kuppgift').html('');
+        }
+        
+        var items = [];
+        for(var key in cart) {
+            for(var value of products) {
+                if(value.id == key) {
+                    items.push({id: key, name: value.prodName, price: value.prodPrice, quantity: cart[key]});
+                    break;
+                }
+            }
+        }
+        
+        var total = frakt;
+        var html  = '<h3 class="center">Kundvagn</h3>';
+        for(var value of items) {
+            html += '<div class="citem"><div class="cimage"><img src="images/'+value.id+'.jpg" />';
+            html += '<button onclick="updateCart('+value.id+', 0)" class="ui button">Ta bort</button></div>';
+            html += '<div class="ctext"><a href="produkt.html?id='+value.id+'">'+value.name+'</a><br /><span>Antal: </span>';
+            html += '<input onchange="updateCart('+value.id+', $(this).val())" type="number" value="'+value.quantity+'" min="1" />';
+            html += '<br /><span>Styckpris: </span><span class="red">'+value.price+' kr</span></div></div>';
+            total += value.quantity * value.price;
+        }
+        html += '<div class="ctotal">Frakt: '+frakt+' kr<br />Att betala: <span class="red bold">'+total+' kr</span></div>';
+        $('#kcart').html(html); $('.betala span').text(total+' kr');
+    };
+    
+    var updateCart = function(id, antal) {
+        if(!cart[id]) return;
+        if(antal == 0) delete cart[id]; else cart[id] = Number(antal);
+        localStorage.cart = JSON.stringify(cart); showCart();
+    };
+    
+    $(document).ready(function(){
+        $('#kontoForm').form({
+            fields:{
+                name:{identifier:'name',rules:[{type:'regExp',value:/^.{1,}$/i}]},
+                password:{identifier:'password',rules:[{type:'regExp',value:/^[a-zA-Z0-9]{4,}$/i}]},
+                repass:{identifier:'repass',rules:[{type:'regExp',value:/^[a-zA-Z0-9]{4,}$/i}]},
+                email:{identifier:'email',rules:[{type:'regExp',value:/^[\w-]+(\.[\w-]+)*@([a-z0-9-]+(\.[a-z0-9-]+)*?\.[a-z]{2,6}|(\d{1,3}\.){3}\d{1,3})(:\d{4})?$/i}]},
+                phone:{identifier:'phone',rules:[{type:'regExp',value:/^[0-9\s\-]+$/i}]},                
+                gatuadress:{identifier:'gatuadress',rules:[{type:'regExp',value:/^.{1,}$/i}]},                
+                zipcode:{identifier:'zipcode',rules:[{type:'regExp',value:/^[0-9\s]+$/i}]},                
+                city:{identifier:'city',rules:[{type:'regExp',value:/^.{1,}$/i}]}
+            },
+            onSuccess: function(event, fields){
+                event.preventDefault();
+                var customer = {id: customers.length + 1};
+                customer.email  = fields.email.trim();
+                customer.name   = fields.name.trim();
+                customer.phone  = fields.phone.trim();
+                customer.password   = fields.password.trim();
+                customer.newsletter = fields.newsletter ? 1 : 0;
+                customer.address = fields.gatuadress.trim()+', '+fields.zipcode.replace(/\D/g,'')+' '+fields.city.trim();
+                if(customer.password != fields.repass.trim()) return $("input[name=repass]").parent("div").addClass("error");
+                
+                if(curUID) {
+                    for(var key in customers) {
+                        if(customers[key].email == curUID) {
+                            customers[key] = customer; break;
+                        }
+                    }
+                    
+                } else {
+                    for(var value of customers) {
+                        if(value.email == customer.email) {
+                            $("input[name=email]").parent("div").addClass("error");
+                            modalHTML("error", "Skapa kontot", "E-postadressen är duplicerad.");
+                            return $(".ui.modal").modal({closable: false}).modal("show");
+                        }
+                    }
+                    customers.push(customer);
+                }
+                localStorage.customers = JSON.stringify(customers);
+                
+                delete customer.password;
+                delete customer.newsletter;
+                var total = 0, items = [];
+                var orders = [], order = {customer: customer, date: (new Date()).toLocaleString()};
+                if(localStorage.orders) orders = JSON.parse(localStorage.orders);
+                order.id = orders.length + 1; order.frakt = frakt;
+                for(var key in cart) {
+                    for(var value of products) {
+                        if(value.id == key) {
+                            items.push({id: key, name: value.prodName, price: value.prodPrice, quantity: cart[key]});
+                            total += cart[key] * value.prodPrice;
+                            break;
+                        }
+                    }
+                }
+                order.items = items;
+                order.total = total + frakt
+                orders.push(order);
+                localStorage.orders = JSON.stringify(orders);
+                
+                delete localStorage.cart;
+                window.location = 'tack.html?id='+order.id;
+            }
+        });
+    });
+</script>
+</head>
+<body class="pushable">
+    <!-- Left Sidebar -->
+    <div class="ui inverted left vertical sidebar menu">
+        <div class="mdiv"></div><ul class="ul"></ul>
+    </div>
+
+    <!-- Top Fixed Menu  menu-trigger-->
+    <div class="ui top fixed menu">
+        <div class="ui container">
+            <a class="item meny"><i class="sidebar icon"></i><span>Meny</span></a>
+            <a class="item logo" href="index.html">TechStore</a>
+            <div class="ui dropdown link item">
+                <i class="grid layout icon"></i>
+                <span class="text">Produkter</span>
+                <div class="menu"></div>
+            </div>
+            <a id="omoss" href="omoss.html" class="ui item"><i class="info circle icon"></i><span>Om oss</span></a>
+            <a id="kontaktaoss" href="kontakt.html" class="ui item"><i class="linkify icon"></i><span>Kontakta oss</span></a>
+            <a id="kundvagn" class="ui item"><i class="in cart icon"></i><span></span></a>
+            <a id="signIO" class="ui item"></a>
+        </div>
+    </div>
+
+    <div class="pusher">
+        <!-- Page Content Here-->
+        <div class="mdiv"></div>
+        <div class="ui container">
+            <div class="one wide row">
+                <h2 class="khead center">Kassan</h2>
+                <div class="ui stackable two column grid">
+                    <div id="kcart" class="column"></div>
+                    <div id="kuppgift" class="column">
+                        <form id="kontoForm" class="ui large form error">
+                            <h3 class="center">Kunduppgifter</h3>
+                            <h5 class="center">Har du redan ett konto? <label class="loggain" onclick="$('#signIO').click()">Logga in</label></h5>
+                            <label>Namn</label>
+                            <div class="ui left icon input field">
+                                <input name="name" type="text" placeholder="Namn" /><i class="user icon"></i>
+                            </div>
+                            <label>Telefonnummer</label>
+                            <div class="ui left icon input field">
+                                <input name="phone" type="text" placeholder="Telefonnummer" /><i class="volume control phone icon"></i>
+                            </div>
+                            <label>E-postadress</label>
+                            <div class="ui left icon input field">
+                                <input name="email" type="text" placeholder="E-postadress" /><i class="mail icon"></i>
+                            </div>
+                            <label>Lösenord</label>
+                            <div class="ui left icon input field">
+                                <input name="password" type="password" placeholder="Lösenord" /><i class="lock icon"></i>
+                            </div>
+                            <label>Upprepa lösenordet</label>
+                            <div class="ui left icon input field">
+                                <input name="repass" type="password" placeholder="Upprepa lösenordet" /><i class="lock icon"></i>
+                            </div>
+                            <label>Gatuadress</label>
+                            <div class="ui left icon input field">
+                                <input name="gatuadress" type="text" placeholder="Gatuadress" /><i class="location arrow icon"></i>
+                            </div>
+                            <label>Postnummer</label>
+                            <div class="ui left icon input field">
+                                <input name="zipcode" type="text" placeholder="Postnummer" /><i class="location arrow icon"></i>
+                            </div>
+                            <label>Stad</label>
+                            <div class="ui left icon input field">
+                                <input name="city" type="text" placeholder="Stad" /><i class="location arrow icon"></i>
+                            </div>
+                            <div class="ui checkbox">
+                                <input name="newsletter" type="checkbox" /><label>Prenumerera på vårt nyhetsbrev</label>
+                            </div>
+                            <div class="betala center">
+                                <h4>Att betala: <span class="red bold"></span></h4>
+                                <button class="ui labeled icon button green"><i class="shop icon"></i>Beställa</button>
+                            </div>
+                            <div class="ui error message"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height grid">
+                    <div class="eight wide column">
+                        <h4 class="ui inverted header">Kontaktinformation</h4>
+                        <div class="ui inverted link list">
+                            <span>TechStore</span><br />
+                            <span>Halvsekelsgatan 7</span><br />
+                            <span>41508 Göteborg</span><br /><br />
+                            <span>E-post: kontakt@techstore.se</span><br />
+                            <span>Telefon: 070 00 00 00</span>
+                        </div>
+                    </div>
+                    <div class="eight wide column">
+                        <h4 class="ui inverted header"></h4>
+                        <div class="ui inverted link list block">
+                            <a href="kontakt.html" class="item"><i class="chevron right icon"></i> Kontakta oss</a>
+                            <a href="konto.html" class="item"><i class="chevron right icon"></i> Skapa konto</a>
+                            <a href="omoss.html" class="item"><i class="chevron right icon"></i> Om oss</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

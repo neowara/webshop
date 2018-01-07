@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "email": "janne@hiveandfive.se",
+        "password": "12345",
+        "name": "Janne Kemi",
+        "address": "",
+        "phone": "",
+        "newsletter": 0
+    },{
+        "id": 2,
+        "email": "test@test.com",
+        "password": "test",
+        "name": "Test Test",
+        "address": "",
+        "phone": "",
+        "newsletter": 1
+    }
+]

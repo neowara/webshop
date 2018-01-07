@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet" href="semantic/semantic.min.css" />
+<link rel="stylesheet" href="styles/main.css" />
+<script src="scripts/jquery-3.2.1.min.js"></script>
+<script src="semantic/semantic.min.js"></script>
+<script src="scripts/main.js"></script>
+<title>Tack - TechStore</title>
+<script>
+    $(document).ready(function(){
+        var temp = false;
+        if(localStorage.orders) {
+            orders = JSON.parse(localStorage.orders);
+            var orderID = location.search.substr(1).split('=')[1];
+            for(var order of orders) {
+                if(orderID == order.id) {
+                    temp = true; break;
+                }
+            }
+        }
+        if(temp) $('.tack').html('<i class="check square icon"></i><br/>Tack för din beställning!');
+        else $('.tack').addClass('red').html('<i class="warning sign icon"></i><br/>Det finns ingen sådan order!');
+    });
+</script>
+</head>
+<body class="pushable">
+    <!-- Left Sidebar -->
+    <div class="ui inverted left vertical sidebar menu">
+        <div class="mdiv"></div><ul class="ul"></ul>
+    </div>
+
+    <!-- Top Fixed Menu  menu-trigger-->
+    <div class="ui top fixed menu">
+        <div class="ui container">
+            <a class="item meny"><i class="sidebar icon"></i><span>Meny</span></a>
+            <a class="item logo" href="index.html">TechStore</a>
+            <div class="ui dropdown link item">
+                <i class="grid layout icon"></i>
+                <span class="text">Produkter</span>
+                <div class="menu"></div>
+            </div>
+            <a id="omoss" href="omoss.html" class="ui item"><i class="info circle icon"></i><span>Om oss</span></a>
+            <a id="kontaktaoss" href="kontakt.html" class="ui item"><i class="linkify icon"></i><span>Kontakta oss</span></a>
+            <a id="kundvagn" class="ui item"><i class="in cart icon"></i><span></span></a>
+            <a id="signIO" class="ui item"></a>
+        </div>
+    </div>
+
+    <div class="pusher">
+        <!-- Page Content Here-->
+        <div class="mdiv"></div>
+        <div class="ui container">
+            <div class="one wide row">
+                <h2 class="tack center"></h2>             
+            </div>
+        </div>
+    
+        <!-- Footer -->
+        <div class="ui inverted vertical footer segment">
+            <div class="ui container">
+                <div class="ui stackable inverted divided equal height grid">
+                    <div class="eight wide column">
+                        <h4 class="ui inverted header">Kontaktinformation</h4>
+                        <div class="ui inverted link list">
+                            <span>TechStore</span><br />
+                            <span>Halvsekelsgatan 7</span><br />
+                            <span>41508 Göteborg</span><br /><br />
+                            <span>E-post: kontakt@techstore.se</span><br />
+                            <span>Telefon: 070 00 00 00</span>
+                        </div>
+                    </div>
+                    <div class="eight wide column">
+                        <h4 class="ui inverted header"></h4>
+                        <div class="ui inverted link list block">
+                            <a href="kontakt.html" class="item"><i class="chevron right icon"></i> Kontakta oss</a>
+                            <a href="konto.html" class="item"><i class="chevron right icon"></i> Skapa konto</a>
+                            <a href="omoss.html" class="item"><i class="chevron right icon"></i> Om oss</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

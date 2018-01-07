@@ -1,0 +1,132 @@
+html {
+    -ms-text-size-adjust:100%;
+    -webkit-text-size-adjust:100%;
+    -webkit-overflow-scrolling : touch !important;
+    touch-action: manipulation;
+}
+
+body {
+    margin: 0px; padding: 0px;
+    font-size: 1em; line-height: 1.5; color: #333;
+}
+
+*, *:focus, *:hover {
+    outline: 0;	outline: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+html.ios {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+html.ios,
+html.ios body {
+  height: initial !important;
+}
+
+.ui.menu:not(.vertical) .item {
+    flex-flow: row wrap;
+    justify-content: center;
+    color: #555;
+}
+.gray { color: #666; }
+.red { color: #db2828 !important; }
+.ui.menu:not(.vertical) .item i { font-size: 1.5em; }
+.ui.menu:not(.vertical) .item span { width: 100%; text-align: center; vertical-align: 25%; }
+.ui.left.visible.sidebar { box-shadow: none; }
+.mdiv { height: 50px; }
+body.pushable { background: transparent !important; }
+.ui.menu:not(.vertical) .item { padding: 12px 0px; }
+.logo { font-size: 2em; color: brown !important; padding: 12px 25px !important; }
+.block { display: inline-block; }
+.meny { display: none !important; text-align: center; padding: 12px 8px !important; }
+.meny span { display: block; }
+.logo:hover { background: transparent !important; }
+#kundvagn { width: 110px; }
+.pad20 { padding: 20px; }
+.ui.dropdown .menu {
+    width: 650px !important;
+    margin-top: 5px !important;
+}
+
+.mcolumn {
+    float: left; vertical-align: top;
+    width: 25%; padding: 0.5em;
+}
+.mcolumn .item { padding: 5px !important; }
+.mcolumn .item:before { width: 0px !important; }
+.mcolumn .item:hover { background-color: transparent !important; color: #4183c4 !important; }
+.lm30 { margin-left: 30px; }
+
+.ulink { margin: 5px 10px; font-size: 1.2em; color: #fff; }
+.ulink i { font-size: 1.5em; } .ulink span { vertical-align: 15%; font-weight: 700; }
+.sidebar .ul { list-style: none; margin: 0px; padding: 0px; }
+.sidebar>.ul { margin-bottom: 30px; }
+.sidebar .ul li { padding: 5px; }
+.ul>li>.ul>li>.ulink { margin-left: 38px; }
+.pusher>.ui.container { margin-top: 20px; min-height: calc(100vh - 280px); margin-bottom: 50px; }
+.banner { width: 100%; }
+.input { width: 100%; margin: 5px 0px 10px 0px !important; }
+#loginForm { width: 90%; margin: 5%; }
+.ui.labeled.icon .icon { font-size: 1.25em !important; }
+.center { text-align: center !important; }
+.width100 { width: 100%; }
+#skapaForm .ui.checkbox { margin: 20px 0px; }
+.ui.card { width: 100%; height: 100%; transition: 0.25s;}
+.ui.card:hover {
+    box-shadow: 3px 3px 6px 3px rgba(0,0,0,0.25);
+}
+.ui.card>.image { padding: 5px; background-color: #fff; }
+.ui.card .extra { margin-bottom: 25px;}
+.ui.card .extra span { font-size: 1.5em; color: #db2828; cursor: default; vertical-align: -50%; }
+.ui.card .extra i { font-size: 1.5em; }
+.ui.breadcrumb { margin-left: 15px; font-size: 0.9em; }
+
+.pimage { max-width: 100%; }
+.pprice { margin-top: 50px; }
+.khead { margin: 30px 0px !important; }
+
+.citem {
+    padding: 5px; display: flex;
+    border-top: 1px #ccc dotted;
+}
+.citem:nth-child(2) { border-top: none; }
+
+.bold { font-weight: 700; }
+.cimage { flex: 1; padding: 5px; text-align: center; }
+.cimage img { max-width: 100%; }
+.cimage button { font-size: 0.65em !important; } 
+.ctext { flex: 3; padding: 5px; line-height: 2em; }
+.ctext input { width: 50px; text-align: center; border: 1px #ccc solid; border-radius: 3px; }
+.ctotal { font-size: 1.25em; padding: 10px; line-height: 2em; padding-left: 28%; border-top: 1px #777 solid; }
+.loggain { cursor: pointer; color: #4183c4; }
+.loggain:hover { color: #666; }
+.betala, .tack { margin-top: 50px !important; }
+.tack { line-height: 2em; color: green; } .tack i { font-size: 1.5em; }
+
+@media (min-width: 500px) and (max-width: 800px) {
+    .ui.stackable.grid.products>.column:not(.row) { width: 50% !important; }
+}
+
+@media (max-width: 410px) {
+    .logo { font-size: 1.5em; padding: 12px 15px !important; }
+    .ui.menu:not(.vertical) .item span { font-size: 0.8em; }
+    #kundvagn { width: 90px; }    
+}
+
+@media (max-width: 520px) {
+    #kontaktaoss { display: none; }
+}
+
+@media (max-width: 600px) {
+    #omoss { display: none; }
+}
+
+@media (max-width: 830px) {
+    .meny { display: block !important; }
+    .ui.dropdown.link.item { display: none; }
+}
+
+@media (max-width: 940px) {
+    .ui.top.fixed.menu .container { margin-left: 0px !important; }
+}

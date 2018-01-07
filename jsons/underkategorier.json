@@ -1,0 +1,67 @@
+[
+    {
+        "id": 1,
+        "name": "Acer",
+        "huvudkategori": 1
+    },{
+        "id": 2,
+        "name": "Apple",
+        "huvudkategori": 1
+    },{
+        "id": 3,
+        "name": "ASUS",
+        "huvudkategori": 1
+    },{
+        "id": 4,
+        "name": "Lenovo",
+        "huvudkategori": 1
+    },{
+        "id": 5,
+        "name": "Apple",
+        "huvudkategori": 2
+    },{
+        "id": 6,
+        "name": "ASUS",
+        "huvudkategori": 2
+    },{
+        "id": 7,
+        "name": "HP",
+        "huvudkategori": 2
+    },{
+        "id": 8,
+        "name": "Lenovo",
+        "huvudkategori": 2
+    },{
+        "id": 9,
+        "name": "Apple",
+        "huvudkategori": 3
+    },{
+        "id": 10,
+        "name": "Lenovo",
+        "huvudkategori": 3
+    },{
+        "id": 11,
+        "name": "Microsoft",
+        "huvudkategori": 3
+    },{
+        "id": 12,
+        "name": "Samsung",
+        "huvudkategori": 3
+    },{
+        "id": 13,
+        "name": "iPhone",
+        "huvudkategori": 4
+    },{
+        "id": 14,
+        "name": "Motorola",
+        "huvudkategori": 4
+    },{
+        "id": 15,
+        "name": "Samsung",
+        "huvudkategori": 4
+    },{
+        "id": 16,
+        "name": "Sony",
+        "huvudkategori": 4
+    }
+]

@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "icon": "laptop",
+        "name": "Bärbara datorer"
+    },{
+        "id": 2,
+        "icon": "desktop",
+        "name": "Stationära datorer"
+    },{
+        "id": 3,
+        "icon": "tablet",
+        "name": "Surfplattor"
+    },{
+        "id": 4,
+        "icon": "mobile",
+        "name": "Smartmobiler"
+    }
+]

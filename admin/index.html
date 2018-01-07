@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="sv"><head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<link rel="stylesheet" href="../semantic/semantic.min.css" />
+<link rel="stylesheet" href="../styles/admin.css" />
+<script src="../scripts/jquery-3.2.1.min.js"></script>
+<script src="../semantic/semantic.min.js"></script>
+<script src="../scripts/global.js"></script>
+<title>Administration - TechStore</title>
+<script>
+    if(sessionStorage.admin == admin.userid) window.location = 'orders.html';
+    $(document).ready(function(){
+        $('.ui.form').form({
+            fields:{
+                username:{identifier:'username',rules:[{type:'regExp',value:/^[a-zA-Z]{4,}$/i,prompt:'Ange ett giltigt användarnamn'}]},
+                password:{identifier:'password',rules:[{type:'regExp',value:/^[a-zA-Z0-9]{4,}$/i,prompt:'Ange ett giltigt lösenord'}]}
+            },
+            onSuccess: function(event, fields){
+                event.preventDefault();
+                fields.password = fields.password.trim().toLowerCase();
+                fields.username = fields.username.trim().toLowerCase();
+                if((admin.password == fields.password) && (admin.userid == fields.username)) {
+                    sessionStorage.admin = admin.userid;
+                    window.location = 'orders.html';
+                } else $("input[name=username], input[name=password]").parent("div").addClass("error");
+            }
+        });
+    });
+</script>
+</head>
+<body>
+    <!-- Top Fixed Menu  menu-trigger-->
+    <div class="ui top fixed menu">
+        <div class="ui container">
+            <a class="item logo" href="./">TechStore</a>
+        </div>
+    </div>
+
+    <div class="pusher">
+        <!-- Page Content Here-->
+        <div class="mdiv"></div>
+        <div class="ui container">
+            <div class="one wide row">
+                <div class="ui middle aligned aligned grid login">
+                    <div class="column">
+                        <h2 class="ui header center"><div class="content">Administration</div></h2>
+                        <form class="ui form error">
+                            <div class="ui segment">
+                                <label>Användarnamn</label>
+                                <div class="ui left icon input field">
+                                    <i class="user icon"></i><input type="text" name="username" placeholder="Användarnamn" />
+                                </div>
+                                <label>Lösenord</label>
+                                <div class="ui left icon input field">
+                                    <i class="lock icon"></i><input type="password" name="password" placeholder="Lösenord" />
+                                </div>
+                                <div class="ui fluid large blue submit button">Logga in</div>
+                            </div>
+                            <div class="ui error message small"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
